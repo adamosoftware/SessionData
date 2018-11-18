@@ -11,8 +11,9 @@ namespace SessionData
 		public DbDictionary(string connectionString)
 		{
 			ConnectionString = connectionString;
-			TypeHandlers = new Dictionary<Type, Func<object, string>>();
-		}		
+			Serializers = new Dictionary<Type, Func<object, string>>();
+			Deserializers = new Dictionary<Type, Func<string, object>>();
+		}
 
 		protected abstract IDbConnection GetConnection();		
 		protected abstract void Initialize(IDbConnection connection);
@@ -23,7 +24,8 @@ namespace SessionData
 		protected string ConnectionString { get; }
 		protected abstract bool KeyExists(IDbConnection connection, string key);
 
-		public Dictionary<Type, Func<object, string>> TypeHandlers { get; private set; }
+		public Dictionary<Type, Func<object, string>> Serializers { get; private set; }
+		public Dictionary<Type, Func<string, object>> Deserializers { get; private set; }
 
 		protected virtual string Serialize(object value)
 		{
@@ -67,7 +69,7 @@ namespace SessionData
 		{
 			string json = Serialize(value);
 
-			foreach (var handler in TypeHandlers)
+			foreach (var handler in Serializers)
 			{
 				if (handler.Key.Equals(value.GetType()))
 				{
