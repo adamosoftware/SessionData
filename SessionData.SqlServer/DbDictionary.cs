@@ -40,7 +40,7 @@ namespace SessionData
 		}
 
 		/// <summary>
-		/// Override this to modify keys, for example to prefix with a user name
+		/// Override this to modify keys, for example to prefix with a user name or session Id
 		/// </summary>
 		protected virtual string FormatKey(string key)
 		{
@@ -64,37 +64,29 @@ namespace SessionData
 
 		public new void Add(string key, object value)
 		{
-			string json = JsonConvert.SerializeObject(value);
+			string json = SerializeInner(value);
 
 			using (var cn = GetConnection())
 			{
-				cn.Execute(InsertCommand, new { key = FormatKey(key), data = json });
+				cn.Execute(InsertCommand, new { key = FormatKey(key), data = json, type = value.GetType().Name });
 			}
 		}
-
 		private void SaveEntry(string key, object value)
-		{
-			string json = Serialize(value);
+		{			
+			string type = value.GetType().Name;
 
-			foreach (var handler in Serializers)
-			{
-				if (handler.Key.Equals(value.GetType()))
-				{
-					json = handler.Value.Invoke(value);
-					break;
-				}
-			}
-
+			string json = SerializeInner(value);
+			
 			using (var cn = GetConnection())
 			{
 				Initialize(cn);
 				if (KeyExists(cn, key))
 				{					
-					cn.Execute(UpdateCommand, new { key = FormatKey(key), data = json, type = value.GetType().Name });
+					cn.Execute(UpdateCommand, new { key = FormatKey(key), data = json, type });
 				}
 				else
 				{
-					cn.Execute(InsertCommand, new { key = FormatKey(key), data = json, type = value.GetType().Name });
+					cn.Execute(InsertCommand, new { key = FormatKey(key), data = json, type });
 				}
 			}
 		}
@@ -111,6 +103,19 @@ namespace SessionData
 				}
 				return JsonConvert.DeserializeObject(data.Data);
 			}
+		}
+
+		private string SerializeInner(object value)
+		{
+			foreach (var handler in Serializers)
+			{
+				if (handler.Key.Equals(value.GetType()))
+				{
+					return handler.Value.Invoke(value);					
+				}
+			}
+
+			return Serialize(value);
 		}
 	}
 
