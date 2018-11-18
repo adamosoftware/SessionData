@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -10,6 +11,7 @@ namespace SessionData
 		public DbDictionary(string connectionString)
 		{
 			ConnectionString = connectionString;
+			TypeHandlers = new Dictionary<Type, Func<object, string>>();
 		}		
 
 		protected abstract IDbConnection GetConnection();		
@@ -20,6 +22,13 @@ namespace SessionData
 
 		protected string ConnectionString { get; }
 		protected abstract bool KeyExists(IDbConnection connection, string key);
+
+		public Dictionary<Type, Func<object, string>> TypeHandlers { get; private set; }
+
+		protected virtual string Serialize(object value)
+		{
+			return JsonConvert.SerializeObject(value);
+		}
 
 		/// <summary>
 		/// Override this to modify keys, for example to prefix with a user name
@@ -56,7 +65,16 @@ namespace SessionData
 
 		private void SaveEntry(string key, object value)
 		{
-			string json = JsonConvert.SerializeObject(value);
+			string json = Serialize(value);
+
+			foreach (var handler in TypeHandlers)
+			{
+				if (handler.Key.Equals(value.GetType()))
+				{
+					json = handler.Value.Invoke(value);
+					break;
+				}
+			}
 
 			using (var cn = GetConnection())
 			{

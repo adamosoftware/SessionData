@@ -32,16 +32,6 @@ namespace SessionData.SqlServer.SqlServer
 			}
 		}
 
-		private bool SchemaExists(IDbConnection connection, string name)
-		{
-			return Exists(connection, "SELECT 1 FROM [sys].[schemas] WHERE [name]=@name", new { name });
-		}
-
-		private static bool TableExists(IDbConnection connection, string schema, string tableName)
-		{
-			return Exists(connection, "SELECT 1 FROM [sys].[tables] WHERE SCHEMA_NAME([schema_id])=@schema AND [name]=@tableName", new { schema, tableName });
-		}
-
 		protected override string QueryCommand => $"SELECT [Data] FROM [session].[{_tableName}] WHERE [Key]=@key";
 
 		protected override string InsertCommand => $"INSERT INTO [session].[{_tableName}] ([Key], [Data]) VALUES (@key, @data)";
@@ -61,6 +51,16 @@ namespace SessionData.SqlServer.SqlServer
 		private static bool Exists(IDbConnection connection, string query, object parameters)
 		{
 			return ((connection.QueryFirstOrDefault<int?>(query, parameters) ?? 0) == 1);
+		}
+
+		private bool SchemaExists(IDbConnection connection, string name)
+		{
+			return Exists(connection, "SELECT 1 FROM [sys].[schemas] WHERE [name]=@name", new { name });
+		}
+
+		private static bool TableExists(IDbConnection connection, string schema, string tableName)
+		{
+			return Exists(connection, "SELECT 1 FROM [sys].[tables] WHERE SCHEMA_NAME([schema_id])=@schema AND [name]=@tableName", new { schema, tableName });
 		}
 	}
 }
