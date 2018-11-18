@@ -9,8 +9,8 @@ namespace SessionData.Mvc.Controllers
 {
 	public class HomeController : Controller
 	{
-		private AppSession _appSession = new AppSession(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-		private UserSession _userSession = null;
+		private AppDictionary _appSession = new AppDictionary(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+		private SessionDictionary _userSession = null;
 
 		protected override void Initialize(RequestContext requestContext)
 		{
@@ -19,7 +19,7 @@ namespace SessionData.Mvc.Controllers
 			_appSession.Serializers.Add(typeof(SelectList), (obj) => SerializeSelectList(obj));
 			_appSession.Deserializers.Add(typeof(SelectList), (json) => DeserializeSelectList(json));
 
-			_userSession = new UserSession(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, Session.SessionID);
+			_userSession = new SessionDictionary(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, Session.SessionID);
 		}
 
 		private object DeserializeSelectList(string json)

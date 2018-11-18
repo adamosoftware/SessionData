@@ -26,17 +26,18 @@ namespace SessionData.SqlServer.SqlServer
 				connection.Execute(
 					$@"CREATE TABLE [session].[{_tableName}] (
 						[Key] nvarchar(255) NOT NULL,
+						[Type] nvarchar(255) NOT NULL,
 						[Data] nvarchar(max) NOT NULL,
 						CONSTRAINT [PK_session_{_tableName}] PRIMARY KEY ([Key])
 					)");
 			}
 		}
 
-		protected override string QueryCommand => $"SELECT [Data] FROM [session].[{_tableName}] WHERE [Key]=@key";
+		protected override string QueryCommand => $"SELECT [Type], [Data] FROM [session].[{_tableName}] WHERE [Key]=@key";
 
-		protected override string InsertCommand => $"INSERT INTO [session].[{_tableName}] ([Key], [Data]) VALUES (@key, @data)";
+		protected override string InsertCommand => $"INSERT INTO [session].[{_tableName}] ([Key], [Type], [Data]) VALUES (@key, @type, @data)";
 
-		protected override string UpdateCommand => $"UPDATE [session].[{_tableName}] SET [Data]=@data WHERE [Key]=@key";
+		protected override string UpdateCommand => $"UPDATE [session].[{_tableName}] SET [Type]=@type, [Data]=@data WHERE [Key]=@key";
 
 		protected override IDbConnection GetConnection()
 		{

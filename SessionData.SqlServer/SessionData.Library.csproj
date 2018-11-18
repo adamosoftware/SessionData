@@ -47,10 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppSession.cs" />
+    <Compile Include="AppDictionary.cs" />
     <Compile Include="DbDictionary.cs" />
     <Compile Include="SqlServer\SqlServerDictionary.cs" />
-    <Compile Include="UserSession.cs" />
+    <Compile Include="SessionDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

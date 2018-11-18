@@ -10,13 +10,20 @@ namespace ConsoleTest
 		{
 			string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
-			var session = new AppSession(connectionString);
-			//session["Greeting"] = "hello";
-			//Console.WriteLine(session["Greeting"] as string);
-			//Console.ReadLine();
+			var store = new AppDictionary(connectionString);
+			store["Greeting"] = "hello";
+			store["DateValue"] = DateTime.Today;
+			store["BoolValue"] = true;
+			store["IntValue"] = 329;
 
-			var userSession = new UserSession(connectionString, "adamo");
-			userSession["Greeting"] = "this be my hello to you";
+			Console.WriteLine(store["Greeting"] as string);
+			Console.WriteLine((DateTime)store["DateValue"]);
+			Console.WriteLine((bool)store["BoolValue"]);
+			Console.WriteLine((int)store["IntValue"]);
+			Console.ReadLine();
+
+			//var userSession = new SessionDictionary(connectionString, "adamo");
+			//userSession["Greeting"] = "this be my hello to you";
 
 		}
 	}

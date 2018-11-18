@@ -6,13 +6,20 @@ using System.Data;
 
 namespace SessionData
 {
-	public abstract class DbDictionary : Dictionary<string, object>
+	public abstract partial class DbDictionary : Dictionary<string, object>
 	{
 		public DbDictionary(string connectionString)
-		{
+		{			
 			ConnectionString = connectionString;
 			Serializers = new Dictionary<Type, Func<object, string>>();
-			Deserializers = new Dictionary<Type, Func<string, object>>();
+			Deserializers = new Dictionary<Type, Func<string, object>>()
+			{
+				{ typeof(string), (json) => JsonConvert.DeserializeObject(json) },
+				{ typeof(DateTime), (json) => JsonConvert.DeserializeObject<DateTime>(json) },
+				{ typeof(bool), (json) => JsonConvert.DeserializeObject<bool>(json) },
+				{ typeof(int), (json) => JsonConvert.DeserializeObject<int>(json) },
+				{ typeof(double), (json) => JsonConvert.DeserializeObject<double>(json) }				
+			};
 		}
 
 		protected abstract IDbConnection GetConnection();		
@@ -83,11 +90,11 @@ namespace SessionData
 				Initialize(cn);
 				if (KeyExists(cn, key))
 				{					
-					cn.Execute(UpdateCommand, new { key = FormatKey(key), data = json });
+					cn.Execute(UpdateCommand, new { key = FormatKey(key), data = json, type = value.GetType().Name });
 				}
 				else
 				{
-					cn.Execute(InsertCommand, new { key = FormatKey(key), data = json });
+					cn.Execute(InsertCommand, new { key = FormatKey(key), data = json, type = value.GetType().Name });
 				}
 			}
 		}
@@ -97,9 +104,19 @@ namespace SessionData
 			using (var cn = GetConnection())
 			{
 				Initialize(cn);
-				string json = cn.QuerySingle<string>(QueryCommand, new { key = FormatKey(key) });
-				return JsonConvert.DeserializeObject(json);
+				var data = cn.QuerySingle<KeyValue>(QueryCommand, new { key = FormatKey(key) });
+				foreach (var handler in Deserializers)
+				{
+					if (data.Type.Equals(handler.Key.Name)) return handler.Value.Invoke(data.Data);
+				}
+				return JsonConvert.DeserializeObject(data.Data);
 			}
 		}
+	}
+
+	internal class KeyValue
+	{
+		public string Type { get; set; }
+		public string Data { get; set; }
 	}
 }
