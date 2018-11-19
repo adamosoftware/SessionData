@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SessionData.SqlServer")]
+[assembly: AssemblyTitle("DbDictionary.SqlServer")]
 [assembly: AssemblyDescription("Dictionary backed by SQL Server, can be used as ASP.NET Session replacement")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Adam O'Neil")]
