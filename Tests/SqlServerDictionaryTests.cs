@@ -99,8 +99,8 @@ namespace Tests
 		}
 
 		private static SqlServerDictionary GetDictionary()
-		{
-			return new SqlServerDictionary(GetConnectionString("DefaultConnection"), "Test");
+		{			
+			return new SqlServerDictionary(GetConnectionString("DefaultConnection"), "Test"); 
 		}
 
 		[TestMethod]

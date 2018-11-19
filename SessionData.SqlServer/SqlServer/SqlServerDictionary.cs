@@ -14,7 +14,7 @@ namespace SessionData.SqlServer.SqlServer
 			_tableName = tableName;
 		}
 
-		protected override bool IsInitialized => true;
+		protected override bool IsInitialized => false;
 
 		protected override void Initialize(IDbConnection connection)
 		{
