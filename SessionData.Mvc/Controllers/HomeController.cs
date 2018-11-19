@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SessionData.Mvc.Classes;
 using SessionData.SqlServer;
 using System;
 using System.Configuration;
@@ -8,41 +9,17 @@ using System.Web.Routing;
 namespace SessionData.Mvc.Controllers
 {
 	public class HomeController : Controller
-	{
-		private AppDictionary _appSession = new AppDictionary(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+	{		
 		private SessionDictionary _userSession = null;
 
 		protected override void Initialize(RequestContext requestContext)
 		{
 			base.Initialize(requestContext);
 
-			_appSession.Serializers.Add(typeof(SelectList), (obj) => SerializeSelectList(obj));
-			_appSession.Deserializers.Add(typeof(SelectList), (json) => DeserializeSelectList(json));
-
 			_userSession = new SessionDictionary(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString, Session.SessionID);
-		}
 
-		private object DeserializeSelectList(string json)
-		{
-			throw new NotImplementedException();
-		}
-
-		private string SerializeSelectList(object obj)
-		{
-			SelectList selectList = obj as SelectList;
-			if (selectList != null)
-			{
-				return JsonConvert.SerializeObject(new
-				{
-					selectList.DataValueField,
-					selectList.DataTextField,
-					selectList.SelectedValue,
-					selectList.SelectedValues,
-					selectList.Items
-				});
-			}
-
-			return null;
+			_userSession.Serializers.Add(typeof(SelectList), (obj) => JsonConvert.SerializeObject(SelectListSerializer.FromSelectList(obj as SelectList)));
+			_userSession.Deserializers.Add(typeof(SelectList), (json) => JsonConvert.DeserializeObject<SelectListSerializer>(json).ToSelectList());
 		}
 
 		public ActionResult Index()
@@ -51,14 +28,20 @@ namespace SessionData.Mvc.Controllers
 			{
 				new SelectListItem() { Value = "this", Text = "This" },
 				new SelectListItem() { Value = "that", Text = "That"},
-				new SelectListItem() { Value = "whatever", Text = "Wahtever" }
+				new SelectListItem() { Value = "whatever", Text = "Whatever" }
 			}, "Value", "Text");
 
-			_appSession["MyDropdown"] = selectList;
+			_userSession["MyDropdown"] = selectList;
 
 			ViewBag.MySelectList = selectList;
 
 			return View();
+		}
+
+		public ActionResult TestSelectList()
+		{
+			ViewBag.MySelectList2 = _userSession["MyDropdown"] as SelectList;
+			return PartialView();
 		}
 
 		public ActionResult About()

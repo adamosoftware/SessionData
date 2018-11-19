@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Dictionary backed by SQL Server, can be used as ASP.NET Session replacement")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Adam O'Neil")]
-[assembly: AssemblyProduct("SessionData.SqlServer")]
+[assembly: AssemblyProduct("DbDictionary.SqlServer")]
 [assembly: AssemblyCopyright("Copyright © Adam O'Neil 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

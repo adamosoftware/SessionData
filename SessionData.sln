@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionData.Library", "Sess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{447992FE-1877-4A07-82AD-63D36CE47ED3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SessionData.Mvc", "SessionData.Mvc\SessionData.Mvc.csproj", "{91CFEF73-499D-4C26-A55C-3F8B24ECBBE3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{447992FE-1877-4A07-82AD-63D36CE47ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{447992FE-1877-4A07-82AD-63D36CE47ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{447992FE-1877-4A07-82AD-63D36CE47ED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91CFEF73-499D-4C26-A55C-3F8B24ECBBE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91CFEF73-499D-4C26-A55C-3F8B24ECBBE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91CFEF73-499D-4C26-A55C-3F8B24ECBBE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91CFEF73-499D-4C26-A55C-3F8B24ECBBE3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
