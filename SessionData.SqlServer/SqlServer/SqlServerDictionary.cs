@@ -14,6 +14,8 @@ namespace SessionData.SqlServer.SqlServer
 			_tableName = tableName;
 		}
 
+		protected override bool IsInitialized => true;
+
 		protected override void Initialize(IDbConnection connection)
 		{
 			if (!SchemaExists(connection, "session"))
@@ -38,6 +40,8 @@ namespace SessionData.SqlServer.SqlServer
 		protected override string InsertCommand => $"INSERT INTO [session].[{_tableName}] ([Key], [Type], [Data]) VALUES (@key, @type, @data)";
 
 		protected override string UpdateCommand => $"UPDATE [session].[{_tableName}] SET [Type]=@type, [Data]=@data WHERE [Key]=@key";
+
+		protected override string DeleteCommand => $"DELETE [session].[{_tableName}] WHERE [Key]=@key";
 
 		protected override IDbConnection GetConnection()
 		{
