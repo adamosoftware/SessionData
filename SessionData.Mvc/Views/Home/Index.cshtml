@@ -3,11 +3,15 @@
 }
 
 <h3>Select List Sample</h3>
-<div>
-    @Html.DropDownList("Field1", ViewBag.MySelectList as SelectList, "(select)")
-</div>    
 
-<h3>Copy of Select List</h3>
-<p>This is a partial view below that renders the SelectList above from SessionDictionary.</p>
+<div class="row">
+    <div class="col-6">
+        <p>This is the original SelectList created by the Index action.</p>
+        @Html.DropDownList("Field1", ViewBag.MySelectList as SelectList, "(select)")
+    </div>
+    <div class="col-6">
+        <p>This is a partial view below that renders the SelectList above from SessionDictionary.</p>
+        @Html.Action("TestSelectList")
+    </div>
+</div>
 
-@Html.Action("TestSelectList")
