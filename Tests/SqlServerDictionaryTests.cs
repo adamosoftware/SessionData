@@ -104,7 +104,7 @@ namespace Tests
 		}
 
 		[TestMethod]
-		public void CustomeDeserializer()
+		public void CustomDeserializer()
 		{
 			var store = GetDictionary();
 			store.Deserializers.Add(typeof(MyCustomType), (json) => JsonConvert.DeserializeObject<MyCustomType>(json));
