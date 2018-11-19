@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SessionData.SqlServer")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Dictionary backed by SQL Server, can be used as ASP.NET Session replacement")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Adam O'Neil")]
 [assembly: AssemblyProduct("SessionData.SqlServer")]
-[assembly: AssemblyCopyright("Copyright ©  2018")]
+[assembly: AssemblyCopyright("Copyright © Adam O'Neil 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
