@@ -1,4 +1,6 @@
-# SessionData (DbDictionary.SqlServer)
+# SessionData
+
+Nuget package: **DbDictionary.SqlServer**
 
 This is intended as a replacement for ASP.NET Session backed by SQL Server, although it's not a drop-in replacement. At heart, it's a  Dictionary type that uses SQL Server for storage and Newtonsoft Json.NET for serialization.
 
