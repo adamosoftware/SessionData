@@ -113,7 +113,7 @@ namespace SessionData
 		{
 			using (var cn = GetConnection())
 			{
-				Initialize(cn);
+				InitializeInner(cn);
 				cn.Execute(DeleteCommand, new { key = FormatKey(key) });
 			}
 		}
